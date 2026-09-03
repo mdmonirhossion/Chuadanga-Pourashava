@@ -4,6 +4,10 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = "chuadanga_pourashava_secret_key_change_this";
+}
+
 const connectDB = require("./config/db");
 
 // Routes
@@ -23,8 +27,11 @@ const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
 
-// Connect Database
-connectDB();
+// Connect Database Middleware for Serverless
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // CORS Middleware
 app.use(

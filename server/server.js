@@ -78,15 +78,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health Check API
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "Chuadanga Pourashava Store Management API is running",
+  res.status(200).json({
+    status: "success",
+    message: "Chuadanga Pourashava Store Server API is running successfully!",
   });
 });
 
+// Favicon 404 Error Suppress
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 app.get("/api/health", (req, res) => {
   res.json({
-    success: true,
+    status: "success",
     message: "Server is healthy",
   });
 });

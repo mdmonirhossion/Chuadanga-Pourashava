@@ -62,6 +62,24 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Explicit OPTIONS preflight interceptor & CORS header handler for Vercel
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (!origin || allowedOrigins.includes(origin) || (origin && origin.endsWith(".vercel.app"))) {
+    res.setHeader("Access-Control-Allow-Origin", origin || "https://chuadanga-pourashava-store.vercel.app");
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "https://chuadanga-pourashava-store.vercel.app");
+  }
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
+
 // 2. Connect Database Middleware for Serverless
 app.use(async (req, res, next) => {
   try {

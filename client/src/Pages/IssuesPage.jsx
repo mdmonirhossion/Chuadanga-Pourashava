@@ -74,7 +74,7 @@ const IssuesPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.employee || !formData.purpose) {
-      setAlert({ type: "error", text: "কর্মকর্তা/কর্মচারী নির্বাচন করুন" });
+      setAlert({ type: "error", text: "কর্মকর্তা/কর্মচারী ও উদ্দেশ্য নির্বাচন করুন" });
       return;
     }
 
@@ -129,8 +129,9 @@ const IssuesPage = () => {
 
       {alert && (
         <div
-          className={`alert ${alert.type === "success" ? "alert-success text-white" : "alert-error text-white"
-            } rounded-2xl shadow-xs py-3 px-5 flex justify-between`}
+          className={`alert ${
+            alert.type === "success" ? "alert-success text-white" : "alert-error text-white"
+          } rounded-2xl shadow-xs py-3 px-5 flex justify-between`}
         >
           <span>{alert.text}</span>
           <button onClick={() => setAlert(null)} className="font-bold cursor-pointer">
@@ -221,10 +222,15 @@ const IssuesPage = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label
+                    htmlFor="issueNumber"
+                    className="block text-xs font-semibold text-slate-700 mb-1"
+                  >
                     ইস্যু নম্বর *
                   </label>
                   <input
+                    id="issueNumber"
+                    name="issueNumber"
                     type="text"
                     required
                     value={formData.issueNumber}
@@ -236,10 +242,15 @@ const IssuesPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label
+                    htmlFor="employee"
+                    className="block text-xs font-semibold text-slate-700 mb-1"
+                  >
                     গ্রহীতা কর্মকর্তা/কর্মচারী *
                   </label>
                   <select
+                    id="employee"
+                    name="employee"
                     required
                     value={formData.employee}
                     onChange={(e) =>
@@ -257,10 +268,15 @@ const IssuesPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label
+                    htmlFor="issueDate"
+                    className="block text-xs font-semibold text-slate-700 mb-1"
+                  >
                     ইস্যুর তারিখ *
                   </label>
                   <input
+                    id="issueDate"
+                    name="issueDate"
                     type="date"
                     required
                     value={formData.issueDate}
@@ -273,24 +289,15 @@ const IssuesPage = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  রিকুইজিশন / আবেদনপত্র নম্বর
-                </label>
-                <input
-                  type="text"
-                  value={formData.requisitionNo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, requisitionNo: e.target.value })
-                  }
-                  placeholder="REQ-1002"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label
+                  htmlFor="purpose"
+                  className="block text-xs font-semibold text-slate-700 mb-1"
+                >
                   উদ্দেশ্য (Purpose) *
                 </label>
                 <input
+                  id="purpose"
+                  name="purpose"
                   type="text"
                   required
                   value={formData.purpose}
@@ -298,6 +305,26 @@ const IssuesPage = () => {
                     setFormData({ ...formData, purpose: e.target.value })
                   }
                   placeholder="যেমন: অফিস ব্যবহারের জন্য"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="requisitionNo"
+                  className="block text-xs font-semibold text-slate-700 mb-1"
+                >
+                  রিকুইজিশন / আবেদনপত্র নম্বর
+                </label>
+                <input
+                  id="requisitionNo"
+                  name="requisitionNo"
+                  type="text"
+                  value={formData.requisitionNo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, requisitionNo: e.target.value })
+                  }
+                  placeholder="REQ-1002"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -317,6 +344,9 @@ const IssuesPage = () => {
                       >
                         <div className="col-span-8">
                           <select
+                            id={`item-${idx}`}
+                            name={`item-${idx}`}
+                            aria-label="আইটেম নির্বাচন করুন"
                             required
                             value={row.item}
                             onChange={(e) =>
@@ -334,6 +364,9 @@ const IssuesPage = () => {
 
                         <div className="col-span-4">
                           <input
+                            id={`quantity-${idx}`}
+                            name={`quantity-${idx}`}
+                            aria-label="পরিমাণ"
                             type="number"
                             min="1"
                             max={selectedItemObj?.currentStock || 999}

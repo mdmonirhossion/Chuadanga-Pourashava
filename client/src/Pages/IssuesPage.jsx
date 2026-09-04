@@ -13,6 +13,7 @@ const IssuesPage = () => {
   const [formData, setFormData] = useState({
     issueNumber: "",
     employee: "",
+    purpose: "",
     issueDate: new Date().toISOString().split("T")[0],
     requisitionNo: "",
     remarks: "",
@@ -48,6 +49,7 @@ const IssuesPage = () => {
     setFormData({
       issueNumber: `ISS-${Date.now().toString().slice(-6)}`,
       employee: employees[0]?._id || "",
+      purpose: "",
       issueDate: new Date().toISOString().split("T")[0],
       requisitionNo: `REQ-${Math.floor(1000 + Math.random() * 9000)}`,
       remarks: "",
@@ -71,7 +73,7 @@ const IssuesPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.employee) {
+    if (!formData.employee || !formData.purpose) {
       setAlert({ type: "error", text: "কর্মকর্তা/কর্মচারী নির্বাচন করুন" });
       return;
     }
@@ -127,9 +129,8 @@ const IssuesPage = () => {
 
       {alert && (
         <div
-          className={`alert ${
-            alert.type === "success" ? "alert-success text-white" : "alert-error text-white"
-          } rounded-2xl shadow-xs py-3 px-5 flex justify-between`}
+          className={`alert ${alert.type === "success" ? "alert-success text-white" : "alert-error text-white"
+            } rounded-2xl shadow-xs py-3 px-5 flex justify-between`}
         >
           <span>{alert.text}</span>
           <button onClick={() => setAlert(null)} className="font-bold cursor-pointer">
@@ -282,6 +283,21 @@ const IssuesPage = () => {
                     setFormData({ ...formData, requisitionNo: e.target.value })
                   }
                   placeholder="REQ-1002"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  উদ্দেশ্য (Purpose) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.purpose}
+                  onChange={(e) =>
+                    setFormData({ ...formData, purpose: e.target.value })
+                  }
+                  placeholder="যেমন: অফিস ব্যবহারের জন্য"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>

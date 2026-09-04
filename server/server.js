@@ -61,7 +61,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 // 2. Connect Database Middleware for Serverless
 app.use(async (req, res, next) => {
